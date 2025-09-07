@@ -1,6 +1,9 @@
 import 'package:cartify/Pages/login.dart';
+import 'package:cartify/services/database.dart';
+import 'package:cartify/services/shared_pref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
 import '../widget/support_widget.dart';
 import 'bottomnav.dart';
@@ -28,12 +31,26 @@ class _SignUpState extends State<SignUp> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.redAccent,
           content: Text('Resitered Successfully',style: TextStyle(fontSize: 20,),),));
+
+        String Id = randomAlphaNumeric(10);
+        
+        await SharePreferenceHelper().saveUserEmail(mailController.text);
+        await SharePreferenceHelper().saveUserId(Id);
+        await SharePreferenceHelper().saveUserName(nameController.text);
+        
+        Map<String,dynamic> userInfoMap={
+          "Name":nameController.text,
+          "Email":mailController.text,
+          "Id":Id,
+        };
+        await DatabaseMethods().addUserDetails(userInfoMap, Id);
         Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomnav()));
       }on FirebaseAuthException catch(e){
         if(e.code == 'weak-Password'){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text('Password Provided is too weak',style: TextStyle(fontSize: 20,),),));
+          
         }else if(e.code == 'email-aready-in-use'){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.redAccent,
