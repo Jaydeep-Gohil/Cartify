@@ -4,6 +4,8 @@ import 'package:cartify/Pages/login.dart';
 import 'package:cartify/Pages/onboarding.dart';
 import 'package:cartify/Pages/product_detail.dart';
 import 'package:cartify/Pages/signup.dart';
+import 'package:cartify/admin/add_product.dart';
+import 'package:cartify/admin/admin_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SignUp(),
+      home: Bottomnav(),
     );
   }
 }
